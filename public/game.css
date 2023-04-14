@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    background-color: red
+  }
+
+.top-bar{
+    background-color: aquamarine;
+    height: 50px;
+}
+
+.card{
+    background-color: lightseagreen;
+    width: 400px;
+    height: 200px;
+}
