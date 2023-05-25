@@ -5,14 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="game.css">
-    <title>Document</title>
+    <title>CardsGame</title>
 </head>
 <body>
     <div class="container">
         <header class="header">
             <div class="image">
-                <img src="otter.jpeg" alt="nutria">
-                <h5 class="contador">00:00</h5>
+                <img src="/assets/otter.jpeg" alt="nutria">
+                <h5 class="contador">00:0</h5>
             </div>
             
             <nav class="buttons">
@@ -23,11 +23,16 @@
             </nav>
         </header>
         <main class="page">
-            <aside class="left-block" onClick="is_false();"></aside>
+            <aside class="left-block" onClick="verificar(false);"></aside>
             <section class="middle-block">
                 <h1 class="question"><%= preguntas[0].preg%></h1>
+                <% 
+                    const ruta = preguntas[0].img;
+                    const nombreImagen = ruta.substring(ruta.lastIndexOf('/') + 1, ruta.lastIndexOf('.'));
+                %>
+                <img class="preg_img" src="<%= ruta%>" alt="<%= nombreImagen%>" width="300" height="150">
             </section>
-            <aside class="right-block" onClick="is_true();">
+            <aside class="right-block" onClick="verificar(true);">
                 <small class="credits">
                     By paris and michel
                 </small>

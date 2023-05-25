@@ -1,27 +1,27 @@
 let preg_num = 0;
 let puntaje = {num: preguntas.length, right:0}
-let tiempo = {segundos:0, centesimas:0};
+let tiempo = {segundos:0, decimas:0};
 
 //Contador
 const contadorElemento = document.querySelector(".contador");
 setInterval(function() {
-    tiempo.centesimas++;
-    if(tiempo.centesimas>=100){
+    tiempo.decimas++;
+    if(tiempo.decimas>=10){
         tiempo.segundos++;
-        tiempo.centesimas = 0;
+        tiempo.decimas = 0;
     }
-  contadorElemento.textContent = tiempo.segundos.toString().padStart(2, '0') +':'+ tiempo.centesimas.toString().padStart(2, '0');
-}, 1000);
+  contadorElemento.textContent = tiempo.segundos.toString().padStart(2, '0') +':'+ tiempo.decimas.toString();
+}, 100);
 
 
 
 //Eventos de Pulsacion de teclas
 document.addEventListener('keydown', (event)=>{
     if (event.code === 'ArrowLeft') {
-        is_false();
+        verificar(false);
         //deslizarTarjeta('izquierda');
       } else if (event.code === 'ArrowRight') {
-        is_true();
+        verificar(true);
         //deslizarTarjeta('derecha');
     }
 });
@@ -33,29 +33,19 @@ function deslizarTarjeta(direccion) {
 }
 
 //El usuario dice que la pregunta es correcta y se valida
-function is_true(){
-    if(preguntas[preg_num].res == true){
+function verificar(val){
+    if(preguntas[preg_num].res == val){
         alert('Correcto');
         puntaje.right++;
     }else{
         alert('Incorrecto');
     }
-    change_question();
+    cambiar_pregunta();
 }
 
-//El usuario dice que la pregunta es incorrecta y se valida
-function is_false(){
-    if(preguntas[preg_num].res == false){
-        alert('Correcto');
-        puntaje.right++;
-    }else{
-        alert('Incorrecto');
-    }
-    change_question();
-}
 
 //Se cambia de pregunta
-function change_question(){
+function cambiar_pregunta(){
     preg_num++;
 
     if(preg_num >= preguntas.length){
@@ -63,6 +53,10 @@ function change_question(){
     }
 
     let contenido = document.querySelector('.question')
-
     contenido.textContent = preguntas[preg_num].preg;
+    
+    let imagen = document.querySelector('.preg_img')
+    const ruta = preguntas[preg_num].img;
+    imagen.src = ruta;
+    imagen.alt = ruta.substring(ruta.lastIndexOf('/') + 1, ruta.lastIndexOf('.'));
 }
