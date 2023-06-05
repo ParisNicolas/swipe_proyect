@@ -53,16 +53,11 @@ app.delete('/admin/remove/ID-:pregId', (req, res) => {
 });
 
 //Administracion de nuevas preguntas
-app.get('/admin/newQuestion', (req, res) => {
-    //res.send('hello ' + req.body.nombre);
+app.put('/admin/newQuestion', (req, res) => {
     //preguntas.push(req.body);
-    res.render('newQuestion');
-});
-
-app.post('/admin/newQuestion', (req, res) => {
-    preguntas.push(req.body);
-    console.log(preguntas);
-    res.status(200).send('Pregunta añadida ' + preguntas.length);
+    //console.log(preguntas);
+    console.log("macaco");
+    res.status(200).send('Pregunta añadida ');
 });
 
 app.listen(port, () => {

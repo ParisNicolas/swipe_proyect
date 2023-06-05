@@ -1,6 +1,10 @@
 console.log("DOW");
 
-const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
+const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
+const createForm = document.getElementById('createForm');
+
+const formValue = document.getElementById('formValue');
+let formVal = true;
 
 let changed = false;
 let newOrder;
@@ -61,3 +65,33 @@ function deletePreg(e){
     parent.remove();
     enviarSolicitud({}, '/admin/remove/ID-' + parent.id, 'DELETE');
 }
+
+function spawnCreateForm(){
+  createForm.classList.remove('d-none');
+}
+
+function changeValueForm(){
+  formVal = formVal ? false:true;
+  formValue.innerHTML = formVal;
+  if(formVal){
+    formValue.classList.remove('bg-danger');
+    formValue.classList.add('bg-success');
+  }else{
+    formValue.classList.remove('bg-success');
+    formValue.classList.add('bg-danger');
+  }
+}
+
+function cleanCreateForm(){
+  formVal = true;
+  formValue.value = formVal;
+  document.getElementById('pregForm').value = "";
+  document.getElementById('imgForm').value = "";
+
+  createForm.classList.add('d-none');
+}
+
+function createQuest(){
+  cleanCreateForm();
+}
+
