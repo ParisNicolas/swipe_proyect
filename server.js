@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const multer = require("multer"); //Para formularios multipart
 const morgan = require('morgan');
 const path = require('path');
 const ejs = require('ejs');
@@ -23,6 +24,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+//Carga de imagenes
+const upload = multer({ dest: "uploads/" });
 
 //Pantalla principal
 app.get('/', (req, res) => {
@@ -52,12 +55,13 @@ app.delete('/admin/remove/ID-:pregId', (req, res) => {
     res.status(200).send('Pregunta '+req.params.pregId+' eliminada');
 });
 
+
 //Administracion de nuevas preguntas
-app.put('/admin/newQuestion', (req, res) => {
-    //preguntas.push(req.body);
-    //console.log(preguntas);
+app.put('/admin/newQuestion', upload.single('image'), (req, res) => {
+    console.log(req.body);
+    console.log(req.file);
     console.log("macaco");
-    res.status(200).send('Pregunta añadida ');
+    res.status(200).send('Pregunta añadida');
 });
 
 app.listen(port, () => {

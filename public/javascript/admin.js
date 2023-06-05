@@ -3,7 +3,11 @@ console.log("DOW");
 const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
 const createForm = document.getElementById('createForm');
 
+//formualario para nueva pregunta
 const formValue = document.getElementById('formValue');
+const pregForm = document.getElementById('pregForm');
+const imgForm = document.getElementById('imgForm');
+
 let formVal = true;
 
 let changed = false;
@@ -83,15 +87,37 @@ function changeValueForm(){
 }
 
 function cleanCreateForm(){
+  //limpia
   formVal = true;
   formValue.value = formVal;
-  document.getElementById('pregForm').value = "";
-  document.getElementById('imgForm').value = "";
+  pregForm.value = "";
+  imgForm.value = "";
 
-  createForm.classList.add('d-none');
+  //despawnea
+  createForm.classList.add('d-none'); 
 }
 
 function createQuest(){
+  let imagen = imgForm.files[0]; // Obtener la imagen seleccionada
+  let valor = formVal;
+  let pregunta =  pregForm.value;
+
+  let formData = new FormData();
+  formData.append('value', valor);
+  formData.append('preg', pregunta);
+  formData.append('image', imagen); // Agregar la imagen al objeto FormData
+  
+
+  fetch('/admin/newQuestion', {
+    method: 'PUT',
+    body: formData
+  })
+  .then(function(response) {
+    console.log(response);
+  })
+  .catch(function(error) {
+    // Manejar errores
+  });
   cleanCreateForm();
 }
 

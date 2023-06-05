@@ -23,9 +23,9 @@
       </button>
 
       <!--Nueva pregunta-->
-      <form id="createForm" action="/admin/newQuestion" method="PUT" enctype="multipart/form-data" class="bg-dark-subtle rounded shadow p-2 mb-3 row d-none" data-bs-theme="light">
+      <div id="createForm" action="/admin/newQuestion" method="PUT" enctype="multipart/form-data" class="bg-dark-subtle rounded shadow p-2 mb-3 row d-none" data-bs-theme="light">
           <div class="col-4">
-            <input id="pregForm" class="form-control" type="text" placeholder="Pregunta">
+            <input id="pregForm" class="form-control" type="text" placeholder="Ingresa tu pregunta">
           </div>
           <div class="col-1 my-auto">
             <button id="formValue" class="badge bg-success" onclick="changeValueForm()"> 
@@ -43,7 +43,7 @@
               Cancel
             </button>
           </div>
-        </form>
+        </div>
 
 
       <div id="sortable-list">
