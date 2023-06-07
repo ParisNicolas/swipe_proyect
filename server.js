@@ -1,16 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const multer = require("multer"); //Para formularios multipart
 const morgan = require('morgan');
 const path = require('path');
 const ejs = require('ejs');
 const app = express();
 const port = 2500;
 
-let preguntas = [{id: '0', preg:'¿Las nutrias son mamiferos?', res:true, img:'assets/images/nutria.png', alt: 'nutria'}, 
-                 {id: '1', preg:'¿Las pulgas muerden?', res:false, img:'assets/images/pulga.jpg', alt: 'pulga'},
-                 {id: '2', preg:'¿Te gusta la salchipapa?', res:true, img:'assets/images/salchipapa.jpg', alt: 'salchipapa'},
-                 {id: '3', preg:'¿Los patos superan a un leon en velocidad?', res:false, img:'assets/images/pato.jpg', alt: 'pato'}];
+const myRouter = require("./router");
 
 
 app.set('view engine', 'ejs');
@@ -24,45 +20,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-//Carga de imagenes
-const upload = multer({ dest: "uploads/" });
 
-//Pantalla principal
-app.get('/', (req, res) => {
-    res.render('home');
-});
-
-//Juego tal cual
-app.get('/MacacoPlaying', (req, res) => {
-    res.render('game', {"preguntas":preguntas});
-});
-
-//Administracion
-app.get('/admin', (req, res) => {
-    res.render('adminPanel', {"preguntas": preguntas});
-});
-
-app.post('/admin', (req, res) => {
-    //Reordenamiento de la lista
-    preguntas = req.body.newOrder.map((n) => preguntas[n]);
-    res.status(200).send('Preguntas reordenadas en: ' + req.body.newOrder);
-});
-
-app.delete('/admin/remove/ID-:pregId', (req, res) => {
-    //Eliminacion de pregunta
-    console.log(req.params);
-    preguntas = preguntas.filter((p) => p.id !== req.params.pregId);
-    res.status(200).send('Pregunta '+req.params.pregId+' eliminada');
-});
-
-
-//Administracion de nuevas preguntas
-app.put('/admin/newQuestion', upload.single('image'), (req, res) => {
-    console.log(req.body);
-    console.log(req.file);
-    console.log("macaco");
-    res.status(200).send('Pregunta añadida');
-});
+//Rutas
+app.use("/", myRouter);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

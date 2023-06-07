@@ -52,7 +52,7 @@ function enviarSolicitud(data, route, method) {
     });
 }
 
-
+//GUARDAR ORDEN
 document.getElementById('reset-btn').addEventListener('click', () =>{
     location.reload();
 });
@@ -64,12 +64,15 @@ document.getElementById('save-btn').addEventListener('click', () =>{
 });
 
 
+//ELiminar
 function deletePreg(e){
     let parent = e.closest(".list-element");
     parent.remove();
     enviarSolicitud({}, '/admin/remove/ID-' + parent.id, 'DELETE');
 }
 
+
+//FORMULARIO
 function spawnCreateForm(){
   createForm.classList.remove('d-none');
 }

@@ -3,12 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>Admin Panel</title>
     <link rel="stylesheet" href="/css/admin.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
   </head>
   <body data-bs-theme="dark">
 
+    <%-include('./fragments/navbar', {actualRoute: 'admin'})%>
+    <%-include('./fragments/watermark')%>
 
     <!--TITULO-->
     <h2 class="m-5 text-sm-center title">Edita, modifica y crea tus propias preguntas</h2>
@@ -23,27 +25,28 @@
       </button>
 
       <!--Nueva pregunta-->
-      <div id="createForm" action="/admin/newQuestion" method="PUT" enctype="multipart/form-data" class="bg-dark-subtle rounded shadow p-2 mb-3 row d-none" data-bs-theme="light">
-          <div class="col-4">
-            <input id="pregForm" class="form-control" type="text" placeholder="Ingresa tu pregunta">
-          </div>
-          <div class="col-1 my-auto">
+      <form id="createForm" action="/admin/newQuestion" method="PUT" enctype="multipart/form-data" class="bg-dark-subtle rounded shadow p-2 mb-3 d-flex flex-column flex-sm-row align-items-center justify-content-between d-none" data-bs-theme="light">
+          <div class="d-flex align-items-center w-50 me-5 me-sm-2">
+            <input id="pregForm" class="form-control me-4" type="text" placeholder="Ingresa tu pregunta">
             <button id="formValue" class="badge bg-success" onclick="changeValueForm()"> 
               True
             </button>
           </div>
-          <div class="col-5 my-auto">
-            <input id="imgForm" class="form-control form-control-sm" type="file">
+          <div class="d-flex align-items-center">
+            <div class="me-3">
+              <input id="imgForm" class="form-control form-control-sm" type="file">
+            </div>
+            <div class="w-50">
+              <button class="btn btn-success btn-sm" onclick="createQuest()">
+                Acept
+              </button>
+              <button type="submit" class="btn btn-danger btn-sm" onclick="cleanCreateForm()">
+                Cancel
+              </button>
+            </div>
           </div>
-          <div class="col-2 my-auto">
-            <button class="btn btn-success btn-sm" onclick="createQuest()">
-              Acept
-            </button>
-            <button type="submit" class="btn btn-danger btn-sm" onclick="cleanCreateForm()">
-              Cancel
-            </button>
-          </div>
-        </div>
+          
+        </form>
 
 
       <div id="sortable-list">
