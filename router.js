@@ -1,74 +1,61 @@
+const {preguntas, ranking} = require('./data');
+global.preguntas = preguntas;
+global.ranking = ranking;
+const myController = require('./controllers/myController');
+const adminController = require('./controllers/adminController');
 const express = require('express');
-const multer = require("multer"); //Para formularios multipart
-const path = require('path');
 const router = express.Router();
-
-//router.route('/').get(myController.inicio);
-
-//Carga de imagenes
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads');
-    },
-    filename: (req, file, cb) => {
-        cb(null, path.basename(file.originalname));
-    }
-});
-const upload = multer({ storage: storage });
-
-
-
-let preguntas = [{id: '0', preg:'¿Las nutrias son mamiferos?', res:true, img:'assets/images/nutria.png', alt: 'nutria'}, 
-                 {id: '1', preg:'¿Las pulgas muerden?', res:false, img:'assets/images/pulga.jpg', alt: 'pulga'},
-                 {id: '2', preg:'¿Te gusta la salchipapa?', res:true, img:'assets/images/salchipapa.jpg', alt: 'salchipapa'},
-                 {id: '3', preg:'¿Los patos superan a un leon en velocidad?', res:false, img:'assets/images/pato.jpg', alt: 'pato'}];
 
 
 //Pantalla principal
-router.get('/', (req, res) => {
-    res.render('home');
-});
-
-
+router.route('/').get(myController.home);
 
 //Juego tal cual
-router.get('/MacacoPlaying', (req, res) => {
-    res.render('game', {"preguntas":preguntas});
-});
+router.route('/MacacoPlaying').get(myController.game);
 
-
+router.route('/ranking/:name').post(myController.rank);
 
 //Administracion
-router.get('/admin', (req, res) => {
-    res.render('adminPanel', {"preguntas": preguntas});
-});
-
-
+router.route('/admin').get(adminController.adminPanel);
 
 //Reordenamiento de la lista
-router.post('/admin', (req, res) => {
-    preguntas = req.body.newOrder.map((n) => preguntas[n]);
-    res.status(200).send('Preguntas reordenadas en: ' + req.body.newOrder);
-});
-
-
+router.route('/admin').post(adminController.reorderUsers);
 
 //Eliminacion de pregunta
-router.delete('/admin/remove/ID-:pregId', (req, res) => {
-    console.log(req.params);
-    preguntas = preguntas.filter((p) => p.id !== req.params.pregId);
-    res.status(200).send('Pregunta '+req.params.pregId+' eliminada');
-});
-
-
+router.route('/admin/remove/ID-:pregId').delete(adminController.deleteUser);
 
 //Administracion de nuevas preguntas
-router.put('/admin/newQuestion', upload.single('image'), (req, res) => {
+router.route('/admin/newQuestion').put(adminController.newQuest);
+
+
+/*
+router.post('/admin/newQuestion', upload.single('image'), (req, res) => {
+    let id = String(Number(preguntas[preguntas.length - 1].id)+1);
+    let preg = stylisize(req.body.preg);
+    let value = req.body.value === 'false' ? false:true; //transform text to bool
+console.log(req.files);
+    let imgRoute = '';
+    let altImg = '';
+    let noImage = true;
+    if(req.hasOwnProperty('file')){
+        imgRoute = '/assets/uploads/' + req.file.originalname;
+        altImg = req.file.fieldname;
+        noImage = false;
+    }
+
+    preguntas.push({id: id, 
+                    preg: preg, 
+                    res: value, 
+                    img: imgRoute, 
+                    alt: altImg,
+                    noImage: noImage});
+
     console.log(req.body);
-    console.log(req.file);
-    console.log("macaco");
-    res.status(200).send('Pregunta añadida');
+    
+    console.log(preguntas);
+    res.status(200).send();
 });
+*/
 
 
 module.exports = router;

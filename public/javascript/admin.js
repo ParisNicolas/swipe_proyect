@@ -1,14 +1,7 @@
 console.log("DOW");
 
 const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
-const createForm = document.getElementById('createForm');
 
-//formualario para nueva pregunta
-const formValue = document.getElementById('formValue');
-const pregForm = document.getElementById('pregForm');
-const imgForm = document.getElementById('imgForm');
-
-let formVal = true;
 
 let changed = false;
 let newOrder;
@@ -32,7 +25,7 @@ new Sortable(sortableList, {
     }
 });
 
-
+ 
 function enviarSolicitud(data, route, method) {
     fetch(route, {
       method: method,
@@ -63,7 +56,6 @@ document.getElementById('save-btn').addEventListener('click', () =>{
     changed = false;
 });
 
-
 //ELiminar
 function deletePreg(e){
     let parent = e.closest(".list-element");
@@ -72,14 +64,43 @@ function deletePreg(e){
 }
 
 
+
+
+//formualario para nueva pregunta
+const createForm = document.getElementById('createForm');
+const formValue = document.getElementById('formValue');
+const formValueInput = document.getElementById('formValueInput');
+const pregForm = document.getElementById('pregForm');
+const imgForm = document.getElementById('imgForm');
+let formVal = true;
+
+
 //FORMULARIO
 function spawnCreateForm(){
   createForm.classList.remove('d-none');
 }
 
+function cleanCreateForm(){
+  //limpia
+  formVal = true;
+  formValue.innerHTML = formVal;
+  formValueInput.value = formVal;
+  pregForm.value = "";
+  imgForm.value = "";
+
+  //despawnea
+  createForm.classList.add('d-none'); 
+}
+
 function changeValueForm(){
+
+  //Cambia el valor booleano y coloca el texto
   formVal = formVal ? false:true;
   formValue.innerHTML = formVal;
+  //Se coloca a la entrada oculta para que se envie con submit
+  formValueInput.value = formVal;
+  
+  //Cambia el fondo
   if(formVal){
     formValue.classList.remove('bg-danger');
     formValue.classList.add('bg-success');
@@ -89,38 +110,28 @@ function changeValueForm(){
   }
 }
 
-function cleanCreateForm(){
-  //limpia
-  formVal = true;
-  formValue.value = formVal;
-  pregForm.value = "";
-  imgForm.value = "";
-
-  //despawnea
-  createForm.classList.add('d-none'); 
-}
-
-function createQuest(){
-  let imagen = imgForm.files[0]; // Obtener la imagen seleccionada
+function createQuest(event){
+  //event.preventDefault();
+  /*let imagen = imgForm.files[0]; // Obtener la imagen seleccionada
   let valor = formVal;
   let pregunta =  pregForm.value;
 
   let formData = new FormData();
   formData.append('value', valor);
   formData.append('preg', pregunta);
-  formData.append('image', imagen); // Agregar la imagen al objeto FormData
+  formData.append('image', imagen); // Agregar la imagen al objeto FormData*/
   
 
   fetch('/admin/newQuestion', {
     method: 'PUT',
-    body: formData
+    body: new FormData(document.getElementById('createForm')),
   })
-  .then(function(response) {
-    console.log(response);
+  .then(response => {
+      // Redireccionar o actualizar la página según sea necesario
+      window.location.href = '/admin';
   })
-  .catch(function(error) {
-    // Manejar errores
+  .catch(error => {
+    // Manejar el error de la petición
   });
-  cleanCreateForm();
 }
 

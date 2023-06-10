@@ -17,7 +17,7 @@
             
             <nav class="buttons">
                 <button class="button" onclick="window.location.href = '/admin'">ADMIN</button>
-                <button class="button">SCORE</button>
+                <button class="button" onclick="leaderboard();">SCORE</button>
                 <button class="button" onclick="window.location.href = '/'">MENU</button>
                 <button class="button" onclick="window.location.reload()">RESET</button>
             </nav>
@@ -25,12 +25,8 @@
         <main class="page">
             <aside class="left-block" onClick="verificar(false);"></aside>
             <section class="middle-block">
-                <h1 class="question"><%= preguntas[0].preg%></h1>
-                <% 
-                    const ruta = preguntas[0].img;
-                    const nombreImagen = ruta.substring(ruta.lastIndexOf('/') + 1, ruta.lastIndexOf('.'));
-                %>
-                <img class="preg_img" src="<%= ruta%>" alt="<%= nombreImagen%>" width="300" height="150">
+                <h1 class="question"></h1>
+                <img class="preg_img" src="" alt="" width="300" height="150">
             </section>
             <aside class="right-block" onClick="verificar(true);">
                 <small class="credits">
@@ -39,9 +35,13 @@
             </aside>
         </main>
     </div>
+    
+    <%- include('fragments/leaderboardAlert')%>
     <script>
-        let preguntas = <%- JSON.stringify(preguntas)%>
+        let preguntas = <%- JSON.stringify(preguntas)%>;
+        let ranking = <%- JSON.stringify(ranking)%>;
     </script>
+    
     <script src="javascript/logic.js"></script>
 </body>
 </html>

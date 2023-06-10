@@ -1,4 +1,6 @@
-let preg_num = 0;
+
+
+let preg_num = -1; //Permitir colocar la primera pregunta (-1+1 = preguntas[0])
 let puntaje = {num: preguntas.length, right:0}
 let tiempo = {segundos:0, decimas:0};
 
@@ -56,7 +58,15 @@ function cambiar_pregunta(){
     contenido.textContent = preguntas[preg_num].preg;
     
     let imagen = document.querySelector('.preg_img')
-    const ruta = preguntas[preg_num].img;
-    imagen.src = ruta;
-    imagen.alt = ruta.substring(ruta.lastIndexOf('/') + 1, ruta.lastIndexOf('.'));
+    const pregunta = preguntas[preg_num];
+    if(pregunta.noImage){
+        imagen.style.display = 'none'
+    }else{
+        imagen.style.display = 'inline'
+    }
+    imagen.src = pregunta.img;
+    imagen.alt = pregunta.alt;
 }
+
+//Poner la primera pregunta;
+cambiar_pregunta();

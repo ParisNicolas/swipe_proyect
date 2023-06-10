@@ -4,8 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin Panel</title>
-    <link rel="stylesheet" href="/css/admin.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <%- include('fragments/importBootstrap')%>
   </head>
   <body data-bs-theme="dark">
 
@@ -17,46 +16,49 @@
 
     
     <!--LISTA-->
-    <div class="container-md d-flex flex-column p-2">
+    <div class="container-md p-2 vstack gap-3">
       <!--Añadir-->
-      <button class="btn btn-light ms-auto mb-3 me-2"  onclick="spawnCreateForm()">
+      <button class="btn btn-light ms-auto me-2"  onclick="spawnCreateForm()">
         <img src="/assets/icons/plus-lg.svg" alt="Añadir">
         Añadir
       </button>
 
       <!--Nueva pregunta-->
-      <form id="createForm" action="/admin/newQuestion" method="PUT" enctype="multipart/form-data" class="bg-dark-subtle rounded shadow p-2 mb-3 d-flex flex-column flex-sm-row align-items-center justify-content-between d-none" data-bs-theme="light">
-          <div class="d-flex align-items-center w-50 me-5 me-sm-2">
-            <input id="pregForm" class="form-control me-4" type="text" placeholder="Ingresa tu pregunta">
-            <button id="formValue" class="badge bg-success" onclick="changeValueForm()"> 
-              True
-            </button>
-          </div>
-          <div class="d-flex align-items-center">
-            <div class="me-3">
-              <input id="imgForm" class="form-control form-control-sm" type="file">
-            </div>
-            <div class="w-50">
-              <button class="btn btn-success btn-sm" onclick="createQuest()">
-                Acept
-              </button>
-              <button type="submit" class="btn btn-danger btn-sm" onclick="cleanCreateForm()">
-                Cancel
-              </button>
-            </div>
-          </div>
+      <form id="createForm" action="/admin/newQuestion" method="post" enctype="multipart/form-data" class="row bg-dark-subtle rounded shadow p-2 d-none" data-bs-theme="light">
           
-        </form>
+        <div class="d-flex align-items-center mb-1 mb-md-0 col-md-6">
+            <input id="pregForm" name="preg" class="form-control me-4" type="text" placeholder="Ingresa tu pregunta">
+            <label for="formValueInput" id="formValue" class="btn badge bg-success" onclick="changeValueForm()">
+              True
+            </label>
+            <input id="formValueInput" name="value" type="checkbox" value="true" class="d-none">
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between col-md-6">
+          <div class="me-2">
+            <input id="imgForm" name="image" type="file" class="form-control form-control-sm" >
+          </div>
+            
+          <div class="hstack gap-1">
+            <a class="btn btn-success btn-sm" onclick="createQuest()">
+              Acept
+            </a>
+            <a class="btn btn-danger btn-sm" onclick="cleanCreateForm()">
+              Cancel
+            </a>
+          </div>
+        </div>
+      </form>
 
 
-      <div id="sortable-list">
+      <div id="sortable-list" class="vstack gap-3 overflow-auto">
         <%function capitalizeFirstLetter(string){
           return string.toString().charAt(0).toUpperCase() + string.toString().slice(1)}
         %>
 
         <% preguntas.map((e, index)=>{ %>
 
-          <div id="<%=e.id%>" class="list-element bg-body-secondary rounded shadow p-2 mb-3 d-flex flex-row justify-content-between align-items-center" data-order="<%=index%>">
+          <div id="<%=e.id%>" class="list-element bg-body-secondary rounded shadow p-2 d-flex flex-row justify-content-between align-items-center" data-order="<%=index%>">
             
             <!--DATOS-->
             <div class="d-flex align-items-center">

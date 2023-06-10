@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-sm bg-body-tertiary">
+<nav class="navbar navbar-expand-sm bg-body-tertiary sticky-top">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">
         <img src="/assets/otter.jpeg" alt="nutria" class="rounded" width="45px" height="30px">
@@ -9,18 +9,20 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <div class="navbar-nav ms-auto mb-2 mb-sm-0">
           <div class="nav-item mb-1 me-3">
-            <button class="btn btn-secondary btn-sm" onclick="window.location.href = '/MacacoPlaying'">GAME</button>
+            <a class="btn btn-secondary btn-sm" onclick="window.location.href = '/MacacoPlaying'">GAME</a>
           </div>
           <div class="nav-item mb-1 me-3">
-            <button class="btn btn-secondary btn-sm">SCORE</button>
+            <a class="btn btn-secondary btn-sm" onclick="leaderboard()">SCORE</a>
           </div>
           <div class="nav-item mb-1 me-3">
-            <button class="btn btn-secondary btn-sm" onclick="window.location.href = '/'">MENU</button>
+            <a class="btn btn-secondary btn-sm" onclick="window.location.href = '/'">MENU</a>
           </div>
           <div class="nav-item mb-1 me-5">
-            <button class="btn btn-secondary btn-sm" onclick="window.location.reload()">RESET</button>
+            <a class="btn btn-secondary btn-sm" onclick="window.location.reload()">RESET</a>
           </div>
         </div>
       </div>
     </div>
   </nav>
+
+  <%- include('leaderboardAlert')%>
