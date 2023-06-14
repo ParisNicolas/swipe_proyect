@@ -37,10 +37,30 @@ function deslizarTarjeta(direccion) {
 //El usuario dice que la pregunta es correcta y se valida
 function verificar(val){
     if(preguntas[preg_num].res == val){
-        alert('Correcto');
+        Swal.fire({
+            text: "Incorrecto",
+            background: "transparent",
+            showConfirmButton: false,
+            timer: 1000, // Duración de 1 segundo en milisegundos
+            position: "top",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false,
+          });
+          
+          // Eliminar el alert/toast después de 2 segundos
+          setTimeout(function() {
+            Swal.close();
+          }, 2000);
+
         puntaje.right++;
     }else{
-        alert('Incorrecto');
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'It is wrong!',
+            footer: '<a href="">Why do I have this issue?</a>'
+          })
     }
     cambiar_pregunta();
 }
@@ -51,7 +71,20 @@ function cambiar_pregunta(){
     preg_num++;
 
     if(preg_num >= preguntas.length){
-        alert('Bien hecho: ' + puntaje.right+'/'+puntaje.num)
+        Swal.fire({
+            title: 'Bien hecho: ',
+            width: 600,
+            padding: '3em',
+            color: '#716add',
+            background: '#fff url(/images/trees.png)',
+            backdrop: `
+              rgba(0,0,123,0.4)
+              url("/images/nyan-cat.gif")
+              left top
+              no-repeat
+            `
+          })
+        //alert('Bien hecho: ' + puntaje.right+'/'+puntaje.num)
     }
 
     let contenido = document.querySelector('.question')
