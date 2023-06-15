@@ -135,3 +135,19 @@ function createQuest(event){
   });
 }
 
+
+
+
+function modifyQuest(){
+  fetch('/admin/modify/ID-' + parent.id, {
+    method: 'PUT',
+    body: new FormData(document.getElementById('createForm')),
+  })
+  .then(response => {
+      // Redireccionar o actualizar la página según sea necesario
+      window.location.href = '/admin';
+  })
+  .catch(error => {
+    // Manejar el error de la petición
+  });
+}

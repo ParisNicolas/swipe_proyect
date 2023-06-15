@@ -22,12 +22,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-/*
+
 // Carga de variables de entorno
 dotenv.config({ path: "./config.env" });
 const DB = process.env.DATABASE.replace("<PASSWORD>", process.env.DATABASE_PASSWORD);
 
-// Conexión al cloud de Mongodb Atlas
+/*/ Conexión al cloud de Mongodb Atlas
 mongoose
     .connect(DB, {
         useNewUrlParser: true,

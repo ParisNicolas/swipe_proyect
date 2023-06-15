@@ -27,6 +27,9 @@ router.route('/admin/remove/ID-:pregId').delete(adminController.deleteUser);
 //Administracion de nuevas preguntas
 router.route('/admin/newQuestion').put(adminController.newQuest);
 
+// Modificar la pregunta
+router.route('/admin/modify/ID-:pregId').post(adminController.modifyQuest);
+
 
 /*
 router.post('/admin/newQuestion', upload.single('image'), (req, res) => {

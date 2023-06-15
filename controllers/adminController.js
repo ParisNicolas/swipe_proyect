@@ -1,5 +1,6 @@
 const multer = require("multer");
 const path = require('path');
+const { preguntas } = require("../data");
 //const OneModel = require('../models/myModel');
 //const moment = require('moment');
 /*
@@ -19,15 +20,15 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-
-let stylisize = (quest)=>{
+// Añadir signos ¿? si se los escribio
+let stylisize = (quest) => {
     let formalized;
-    if(quest[0] !== '¿'){
+    if (quest[0] !== '¿') {
         formalized = '¿' + quest
-    }else{
+    } else {
         formalized = quest;
     }
-    if(quest[quest.length-1] !== '?'){
+    if (quest[quest.length - 1] !== '?') {
         formalized = formalized + '?';
     }
     return formalized;
@@ -37,7 +38,7 @@ let stylisize = (quest)=>{
 
 
 exports.adminPanel = (req, res) => {
-    res.render('adminPanel', {"preguntas": preguntas, "ranking":ranking});
+    res.render('adminPanel', { "preguntas": preguntas, "ranking": ranking });
 };
 
 
@@ -50,30 +51,61 @@ exports.reorderUsers = (req, res) => {
 exports.deleteUser = (req, res) => {
     console.log(req.params);
     preguntas = preguntas.filter((p) => p.id !== req.params.pregId);
-    res.status(200).send('Pregunta '+req.params.pregId+' eliminada');
+    res.status(200).send('Pregunta ' + req.params.pregId + ' eliminada');
 };
 
 
-exports.newQuest = [upload.single('image'),(req, res) => {
-    let id = String(Number(preguntas[preguntas.length - 1].id)+1);
+exports.newQuest = [upload.single('image'), (req, res) => {
+    let id = String(Number(preguntas[preguntas.length - 1].id) + 1);
     let preg = stylisize(req.body.preg);
-    let value = req.body.value === 'false' ? false:true; //transform text to bool
-    
+    let value = req.body.value === 'false' ? false : true; //transform text to bool
+
     let imgRoute = '';
     let altImg = '';
     let noImage = true;
-    if(req.hasOwnProperty('file')){
+    if (req.hasOwnProperty('file')) {
         imgRoute = '/assets/uploads/' + req.file.originalname;
         altImg = req.file.fieldname;
         noImage = false;
     }
 
-    preguntas.push({id: id, 
-                    preg: preg, 
-                    res: value, 
-                    img: imgRoute, 
-                    alt: altImg,
-                    noImage: noImage});
+    preguntas.push({
+        id: id,
+        preg: preg,
+        res: value,
+        img: imgRoute,
+        alt: altImg,
+        noImage: noImage
+    });
+
+    console.log(req.body);
+    console.log(req.file);
+    console.log(preguntas);
+    res.status(200).send();
+}];
+
+exports.modifyQuest = [upload.single('image'), (req, res) => {
+    let id = req.params.pregId;
+    let preg = stylisize(req.body.preg);
+    let value = req.body.value === 'false' ? false : true; //transform text to bool
+
+    let imgRoute = '';
+    let altImg = '';
+    let noImage = true;
+    if (req.hasOwnProperty('file')) {
+        imgRoute = '/assets/uploads/' + req.file.originalname;
+        altImg = req.file.fieldname;
+        noImage = false;
+    }
+
+    preguntas[preguntas.find(p => p.id === id)] = {
+        id: id,
+        preg: preg,
+        res: value,
+        img: imgRoute,
+        alt: altImg,
+        noImage: noImage
+    };
 
     console.log(req.body);
     console.log(req.file);
