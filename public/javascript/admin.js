@@ -63,9 +63,6 @@ function deletePreg(e){
     enviarSolicitud({}, '/admin/remove/ID-' + parent.id, 'DELETE');
 }
 
-
-
-
 //formualario para nueva pregunta
 const createForm = document.getElementById('createForm');
 const formValue = document.getElementById('formValue');
@@ -92,7 +89,7 @@ function cleanCreateForm(){
   createForm.classList.add('d-none'); 
 }
 
-function changeValueForm(){
+function changeValueForm(idOf){
 
   //Cambia el valor booleano y coloca el texto
   formVal = formVal ? false:true;
@@ -135,7 +132,23 @@ function createQuest(event){
   });
 }
 
+function putModifyForm(e){
+  
+  let elementoOriginal = e.closest(".list-element");
 
+  // Crear un nuevo elemento
+  let nuevoElemento = document.createElement('form');
+  nuevoElemento.setAttribute('id', 'modifyForm')
+  nuevoElemento.classList = createForm.classList
+  nuevoElemento.classList.remove('d-none');
+  nuevoElemento.innerHTML = createForm.innerHTML;
+
+
+
+  // Reemplazar el elemento original
+  elementoOriginal.replaceWith(nuevoElemento);
+  
+}
 
 
 function modifyQuest(){
