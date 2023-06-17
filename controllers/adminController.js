@@ -1,6 +1,6 @@
 const multer = require("multer");
 const path = require('path');
-const { preguntas } = require("../data");
+let { preguntas } = require("../data");
 //const OneModel = require('../models/myModel');
 //const moment = require('moment');
 /*
@@ -42,13 +42,13 @@ exports.adminPanel = (req, res) => {
 };
 
 
-exports.reorderUsers = (req, res) => {
+exports.reorderPregs = (req, res) => {
     preguntas = req.body.newOrder.map((n) => preguntas[n]);
     res.status(200).send('Preguntas reordenadas en: ' + req.body.newOrder);
 };
 
 
-exports.deleteUser = (req, res) => {
+exports.deletePreg = (req, res) => {
     console.log(req.params);
     preguntas = preguntas.filter((p) => p.id !== req.params.pregId);
     res.status(200).send('Pregunta ' + req.params.pregId + ' eliminada');
@@ -89,16 +89,19 @@ exports.modifyQuest = [upload.single('image'), (req, res) => {
     let preg = stylisize(req.body.preg);
     let value = req.body.value === 'false' ? false : true; //transform text to bool
 
-    let imgRoute = '';
-    let altImg = '';
-    let noImage = true;
+    let pregReplace = preguntas.find(p => p.id === id).id;
+
+    let imgRoute = preguntas[pregReplace].img;
+    let altImg = preguntas[pregReplace].alt;
+    let noImage = preguntas[pregReplace].noImage;
     if (req.hasOwnProperty('file')) {
         imgRoute = '/assets/uploads/' + req.file.originalname;
         altImg = req.file.fieldname;
         noImage = false;
     }
 
-    preguntas[preguntas.find(p => p.id === id)] = {
+    
+    preguntas[pregReplace] = {
         id: id,
         preg: preg,
         res: value,
@@ -110,5 +113,6 @@ exports.modifyQuest = [upload.single('image'), (req, res) => {
     console.log(req.body);
     console.log(req.file);
     console.log(preguntas);
-    res.status(200).send();
+    console.log("Pregunta "+ id + " Modificada");
+    res.status(200).send("Pregunta"+ id + "Modificada");
 }];

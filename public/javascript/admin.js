@@ -1,13 +1,14 @@
 console.log("DOW");
 
+//Alert de guardar cambios
 const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
 
-
+//Variables de la lista ordenable
 let changed = false;
 let newOrder;
 let sortableList = document.getElementById('sortable-list');
       
-
+//Nuevo elemento ordenable con la libreria Sortable.min.js
 new Sortable(sortableList, {
     animation: 150,
     ghostClass: 'sortable-ghost',
@@ -25,8 +26,8 @@ new Sortable(sortableList, {
     }
 });
 
- 
-function enviarSolicitud(data, route, method) {
+//Modularizacion del envio de solicitudes
+function enviarSolicitud(data, route, method, func) {
     fetch(route, {
       method: method,
       headers: {
@@ -35,6 +36,9 @@ function enviarSolicitud(data, route, method) {
       body: JSON.stringify(data)
     })
     .then((response) => {
+      if(func){
+        func()
+      }
       return response.text();
     })
     .then((data) => {
@@ -45,122 +49,20 @@ function enviarSolicitud(data, route, method) {
     });
 }
 
-//GUARDAR ORDEN
+//Evento resetear orden
 document.getElementById('reset-btn').addEventListener('click', () =>{
     location.reload();
 });
-
+//Evento guardar orden
 document.getElementById('save-btn').addEventListener('click', () =>{
     enviarSolicitud({newOrder: newOrder}, '/admin', 'POST');
     alertPlaceholder.classList.add('d-none')
     changed = false;
 });
 
-//ELiminar
+//ELiminar pregunta
 function deletePreg(e){
     let parent = e.closest(".list-element");
     parent.remove();
     enviarSolicitud({}, '/admin/remove/ID-' + parent.id, 'DELETE');
-}
-
-//formualario para nueva pregunta
-const createForm = document.getElementById('createForm');
-const formValue = document.getElementById('formValue');
-const formValueInput = document.getElementById('formValueInput');
-const pregForm = document.getElementById('pregForm');
-const imgForm = document.getElementById('imgForm');
-let formVal = true;
-
-
-//FORMULARIO
-function spawnCreateForm(){
-  createForm.classList.remove('d-none');
-}
-
-function cleanCreateForm(){
-  //limpia
-  formVal = true;
-  formValue.innerHTML = formVal;
-  formValueInput.value = formVal;
-  pregForm.value = "";
-  imgForm.value = "";
-
-  //despawnea
-  createForm.classList.add('d-none'); 
-}
-
-function changeValueForm(idOf){
-
-  //Cambia el valor booleano y coloca el texto
-  formVal = formVal ? false:true;
-  formValue.innerHTML = formVal;
-  //Se coloca a la entrada oculta para que se envie con submit
-  formValueInput.value = formVal;
-  
-  //Cambia el fondo
-  if(formVal){
-    formValue.classList.remove('bg-danger');
-    formValue.classList.add('bg-success');
-  }else{
-    formValue.classList.remove('bg-success');
-    formValue.classList.add('bg-danger');
-  }
-}
-
-function createQuest(event){
-  //event.preventDefault();
-  /*let imagen = imgForm.files[0]; // Obtener la imagen seleccionada
-  let valor = formVal;
-  let pregunta =  pregForm.value;
-
-  let formData = new FormData();
-  formData.append('value', valor);
-  formData.append('preg', pregunta);
-  formData.append('image', imagen); // Agregar la imagen al objeto FormData*/
-  
-
-  fetch('/admin/newQuestion', {
-    method: 'PUT',
-    body: new FormData(document.getElementById('createForm')),
-  })
-  .then(response => {
-      // Redireccionar o actualizar la página según sea necesario
-      window.location.href = '/admin';
-  })
-  .catch(error => {
-    // Manejar el error de la petición
-  });
-}
-
-function putModifyForm(e){
-  
-  let elementoOriginal = e.closest(".list-element");
-
-  // Crear un nuevo elemento
-  let nuevoElemento = document.createElement('form');
-  nuevoElemento.setAttribute('id', 'modifyForm')
-  nuevoElemento.classList = createForm.classList
-  nuevoElemento.classList.remove('d-none');
-  nuevoElemento.innerHTML = createForm.innerHTML;
-
-
-
-  // Reemplazar el elemento original
-  elementoOriginal.replaceWith(nuevoElemento);
-  
-}
-
-
-function modifyQuest(){
-  fetch('/admin/modify/ID-' + parent.id, {
-    method: 'PUT',
-    body: new FormData(document.getElementById('createForm')),
-  })
-  .then(response => {
-      // Redireccionar o actualizar la página según sea necesario
-      window.location.href = '/admin';
-  })
-  .catch(error => {
-    // Manejar el error de la petición
-  });
 }

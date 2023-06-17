@@ -19,10 +19,10 @@ router.route('/ranking/:name').post(myController.rank);
 router.route('/admin').get(adminController.adminPanel);
 
 //Reordenamiento de la lista
-router.route('/admin').post(adminController.reorderUsers);
+router.route('/admin').post(adminController.reorderPregs);
 
 //Eliminacion de pregunta
-router.route('/admin/remove/ID-:pregId').delete(adminController.deleteUser);
+router.route('/admin/remove/ID-:pregId').delete(adminController.deletePreg);
 
 //Administracion de nuevas preguntas
 router.route('/admin/newQuestion').put(adminController.newQuest);

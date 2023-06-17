@@ -3,8 +3,8 @@
           
     <div class="d-flex align-items-center mb-1 mb-md-0 col-md-6">
         <input id="pregForm" name="preg" class="form-control me-4" type="text" placeholder="Ingresa tu pregunta">
-        <label for="formValueInput" id="formValue" class="btn badge bg-success" onclick="changeValueForm()">
-          True
+        <label for="formValueInput" id="formValue" class="valText btn badge bg-success">
+          true
         </label>
         <input id="formValueInput" name="value" type="checkbox" value="true" class="d-none">
     </div>
@@ -15,10 +15,10 @@
       </div>
         
       <div class="hstack gap-1">
-        <a class="btn btn-success btn-sm" onclick="createQuest()">
+        <a id="newQuest" class="btn btn-success btn-sm">
           Acept
         </a>
-        <a class="btn btn-danger btn-sm" onclick="cleanCreateForm()">
+        <a id="cleanCreateForm" class="btn btn-danger btn-sm">
           Cancel
         </a>
       </div>
@@ -26,28 +26,31 @@
   </form>
 
   <!--Modificar pregunta-->
-<form id="modifyForm" enctype="multipart/form-data" class="row bg-dark-subtle rounded shadow p-2 d-none" data-bs-theme="light">
+<div id="modifyFormDiv">
+  <form enctype="multipart/form-data" class="row bg-dark-subtle rounded shadow p-2 d-none" data-bs-theme="dark">
           
     <div class="d-flex align-items-center mb-1 mb-md-0 col-md-6">
         <input id="pregForm2" name="preg" class="form-control me-4" type="text" placeholder="Ingresa tu pregunta">
-        <label for="formValueInput" id="formValue2" class="btn badge bg-success" onclick="changeValueForm()">
-          True
+        <label for="formValueInput2" id="formValue2" class="valText btn badge bg-success" onclick="changeValueForm(1)">
+          true
         </label>
-        <input id="formValueInput" name="value" type="checkbox" value="true" class="d-none">
+        <input id="formValueInput2" name="value" type="checkbox" value="true" class="d-none">
     </div>
 
     <div class="d-flex align-items-center justify-content-between col-md-6">
       <div class="me-2">
-        <input id="imgForm" name="image" type="file" class="form-control form-control-sm" >
-      </div>
+        <input id="imgForm2" name="image" type="file" class="form-control form-control-sm" >
         
+      </div>
+        <img src="" alt="a">
       <div class="hstack gap-1">
-        <a class="btn btn-success btn-sm" onclick="createQuest()">
+        <a id="editQuest" class="btn btn-success btn-sm" onclick="sendQuest(1, '/admin/modify/ID-'+elementoOriginal.id, 'POST')">
           Acept
         </a>
-        <a class="btn btn-danger btn-sm" onclick="cleanCreateForm()">
+        <a id="cancelModify" class="btn btn-danger btn-sm" onclick="cancelModify()">
           Cancel
         </a>
       </div>
     </div>
   </form>
+</div>
