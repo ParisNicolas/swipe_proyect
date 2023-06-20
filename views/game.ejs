@@ -23,25 +23,25 @@
             </nav>
         </header>
         <main class="page">
-            <aside class="left-block" onClick="verificar(false);"></aside>
-            <section class="middle-block">
+
+            <aside class="left-block" onClick="verificar(false)"></aside>
+            <section class="middle-block card draggable animate__animated animate__bounceIn">
                 <h1 class="question"></h1>
                 <img class="preg_img" src="" alt="" width="300" height="150">
             </section>
-            <aside class="right-block" onClick="verificar(true);">
-                <small class="credits">
-                    By paris and michel
-                </small>
-            </aside>
+            <aside class="right-block" onClick="verificar(true)"></aside>
         </main>
+        <small class="credits">
+                    By paris and michel
+        </small>
     </div>
+    
     
     <%- include('fragments/leaderboardAlert')%>
     <script>
         let preguntas = <%- JSON.stringify(preguntas)%>;
         let ranking = <%- JSON.stringify(ranking)%>;
     </script>
-    
     <script src="javascript/logic.js"></script>
 </body>
 </html>

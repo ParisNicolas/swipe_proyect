@@ -1,5 +1,5 @@
 
-
+let card = document.querySelector('.middle-block');
 let preg_num = -1; //Permitir colocar la primera pregunta (-1+1 = preguntas[0])
 let puntaje = {num: preguntas.length, right:0}
 let tiempo = {segundos:0, decimas:0};
@@ -15,6 +15,40 @@ setInterval(function() {
   contadorElemento.textContent = tiempo.segundos.toString().padStart(2, '0') +':'+ tiempo.decimas.toString();
 }, 100);
 
+function showAlert(direction) {
+  if (direction === 'right') {
+    alert('¡Derecha!');
+  } else if (direction === 'left') {
+    alert('¡Izquierda!');
+  }
+}
+
+
+//Deslizar dedo
+let startPosX = 0;
+let currentPosX = 0;
+
+card.addEventListener('touchstart', function(event) {
+  startPosX = event.touches[0].clientX;
+});
+
+card.addEventListener('touchmove', function(event) {
+  event.preventDefault();
+  currentPosX = event.touches[0].clientX;
+});
+
+card.addEventListener('touchend', function(event) {
+  var deltaX = currentPosX - startPosX;
+  if (deltaX > 50) {
+    // Deslizamiento hacia la derecha
+    console.log('Deslizamiento hacia la derecha');
+    verificar(true);
+  } else if (deltaX < -50) {
+    // Deslizamiento hacia la izquierda
+    console.log('Deslizamiento hacia la izquierda');
+    verificar(false);
+  }
+});
 
 
 //Eventos de Pulsacion de teclas
@@ -37,30 +71,10 @@ function deslizarTarjeta(direccion) {
 //El usuario dice que la pregunta es correcta y se valida
 function verificar(val){
     if(preguntas[preg_num].res == val){
-        Swal.fire({
-            text: "Incorrecto",
-            background: "transparent",
-            showConfirmButton: false,
-            timer: 1000, // Duración de 1 segundo en milisegundos
-            position: "top",
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            allowEnterKey: false,
-          });
-          
-          // Eliminar el alert/toast después de 2 segundos
-          setTimeout(function() {
-            Swal.close();
-          }, 2000);
-
+        showToast('Correcto', true);
         puntaje.right++;
     }else{
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'It is wrong!',
-            footer: '<a href="">Why do I have this issue?</a>'
-          })
+        showToast('Incorrecto', false);
     }
     cambiar_pregunta();
 }
@@ -72,7 +86,7 @@ function cambiar_pregunta(){
 
     if(preg_num >= preguntas.length){
         Swal.fire({
-            title: 'Bien hecho: ',
+            title: 'Bien hecho: '+ puntaje.right+'/'+puntaje.num,
             width: 600,
             padding: '3em',
             color: '#716add',
@@ -103,3 +117,30 @@ function cambiar_pregunta(){
 
 //Poner la primera pregunta;
 cambiar_pregunta();
+
+
+
+function showToast(message, isSuccess) {
+  var toast = document.createElement('div');
+  toast.classList.add('toast');
+  toast.innerText = message;
+
+  if (isSuccess) {
+    toast.classList.add('success');
+  } else {
+    toast.classList.add('error');
+  }
+
+  document.body.appendChild(toast);
+
+  setTimeout(function() {
+    toast.classList.add('show');
+  }, 100);
+
+  setTimeout(function() {
+    toast.classList.add('hide');
+    setTimeout(function() {
+      toast.parentNode.removeChild(toast);
+    }, 200);
+  }, 1500);
+}

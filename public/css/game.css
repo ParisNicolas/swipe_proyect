@@ -1,4 +1,8 @@
-.container1{
+body{
+  background-color: #eeeef5;
+}
+
+.container{
     display: flex;
     flex-direction: column;
 }
@@ -32,16 +36,19 @@
 
 
 .buttons{
-    margin-right: 80px;
+    margin-right: 1em;
     align-self: center;
 }
 
-.button{
+@media screen and (min-width: 35rem) {
+  .button{
     /*top, right, botton*/
     /*margin: 15px 10px 12px;*/
-    margin-right: 10px;
+    margin-right: 1em;
     padding: 3px 12px 3px 12px;
+  }
 }
+
 
 
 
@@ -63,20 +70,9 @@
     box-shadow: 0 4px 9px rgba(0, 0, 0, 0.3);
     /*transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;*/
 }
-/*
-.derecha {
-    transform: translateX(10%);
-    opacity: 0;
-  }
-  
-.izquierda {
-    transform: translateX(-200%);
-    opacity: 0;
-}
-*/
 
 .question{
-    margin-top: 100px;
+    margin-top: 1em;
     font-size: 300%;
 }
 
@@ -98,3 +94,63 @@
     margin:10px;
     font-style: italic;
 }
+
+/*TOAST DE BIEN O MAL HECHO*/
+.toast {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 10px;
+    padding-right: 20px;
+    border-radius: 4px;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 9999;
+    max-width: 60px;
+    text-align: center;
+  }
+  
+  .toast.show {
+    animation: fadeIn 0.3s ease-in-out;
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .toast.hide {
+    animation: fadeOut 0.2s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateX(-50%) scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+  }
+  
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(-50%) scale(0.8);
+    }
+  }
+
+  .toast.success {
+    background-color: #5cb85c;
+  }
+  
+  .toast.error {
+    background-color: #d9534f;
+  }

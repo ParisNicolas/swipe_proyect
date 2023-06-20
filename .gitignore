@@ -6,6 +6,8 @@
 #gitignore uploads
 public/assets/uploads/*.*
 
+*.env
+
 # Node artifact files
 node_modules/
 dist/
@@ -50,5 +52,3 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-
-*.env
