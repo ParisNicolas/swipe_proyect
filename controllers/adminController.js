@@ -1,12 +1,13 @@
 const multer = require("multer");
 const path = require('path');
 let { preguntas } = require("../data");
-//const OneModel = require('../models/myModel');
-//const moment = require('moment');
+const OneModel = require('../models/myModel');
+const moment = require('moment');
 /*
 let preguntas = global.preguntas;
 let ranking = global.ranking;
 */
+
 
 //Carga de imagenes
 const storage = multer.diskStorage({

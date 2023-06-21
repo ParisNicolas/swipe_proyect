@@ -24,7 +24,7 @@ const postSchema = new mongoose.Schema({
 //Creación del Schema de preguntas
 const questSchema = new mongoose.Schema({
     id: {
-        type: Number,
+        type: String,
         required: [true, "Una pregunta debe tener un id unico"],
     },
     preg: {
@@ -66,6 +66,8 @@ const rankSchema = new mongoose.Schema({
 });
 
 //Creación del modelo Post
-const Post = mongoose.model("Post", postSchema);
+//const Post = mongoose.model("Post", postSchema);
 
-module.exports = Post;
+const Quest = mongoose.model("Quest", questSchema);
+
+module.exports = Quest;
