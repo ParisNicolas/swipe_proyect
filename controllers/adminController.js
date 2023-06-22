@@ -18,10 +18,12 @@ const extractQuest = async () => {
     //console.log('**** RESULTADO ****', post);
 }
 
+// Creamos las preguntas en la base de datos
 const createQuest = async () => {
     Quest.create({newQuest})
 }
 
+// Modificamos las preguntas en la base de datos
 const modifyQuest = async () => {
     Quest.post({modifyQuest})
 }
