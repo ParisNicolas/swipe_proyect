@@ -14,8 +14,6 @@ const extractQuest = async () => {
     const quest = await Quest.find({
         noImage: false
     });
-
-    //console.log('**** RESULTADO ****', post);
 }
 
 // Creamos las preguntas en la base de datos
