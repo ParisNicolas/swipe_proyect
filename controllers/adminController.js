@@ -1,30 +1,12 @@
 const multer = require("multer");
 const path = require('path');
 let { preguntas } = require("../data");
-const OneModel = require('../models/myModel');
 const moment = require('moment');
-const Quest = require("../models/myModel");
+const questSchema = require("../models/myModel");
 /*
 let preguntas = global.preguntas;
 let ranking = global.ranking;
 */
-
-// Extraemos preguntas de la base de datos
-const extractQuest = async () => {
-    const quest = await Quest.find({
-        noImage: false
-    });
-}
-
-// Creamos las preguntas en la base de datos
-const createQuest = async () => {
-    Quest.create({newQuest})
-}
-
-// Modificamos las preguntas en la base de datos
-const modifyQuest = async () => {
-    Quest.post({modifyQuest})
-}
 
 // Carga de imagenes
 const storage = multer.diskStorage({
@@ -56,6 +38,16 @@ let stylisize = (quest) => {
 
 
 exports.adminPanel = (req, res) => {
+    let info;
+
+    // Extraemos preguntas de la base de datos
+    questSchema
+        .find()
+        .then(data => info=data)
+        .catch(error => res.status(500).send(error))
+
+    console.log(info);
+    
     res.render('adminPanel', { "preguntas": preguntas, "ranking": ranking });
 };
 
@@ -74,9 +66,12 @@ exports.deletePreg = (req, res) => {
 
 
 exports.newQuest = [upload.single('image'), (req, res) => {
+    //Sumar 1 al id de la ultima pregunta y pasarlo a str
     let id = String(Number(preguntas[preguntas.length - 1].id) + 1);
     let preg = stylisize(req.body.preg);
-    let value = req.body.value === 'false' ? false : true; //transform text to bool
+
+    //transform text to bool
+    let value = req.body.value === 'false' ? false : true; 
 
     let imgRoute = '';
     let altImg = '';
@@ -87,14 +82,26 @@ exports.newQuest = [upload.single('image'), (req, res) => {
         noImage = false;
     }
 
-    preguntas.push({
-        id: id,
-        preg: preg,
-        res: value,
-        img: imgRoute,
-        alt: altImg,
-        noImage: noImage
-    });
+    //Creando estructura
+    let obj = {
+        'id': id,
+        'preg': preg,
+        'res': value,
+        'img': imgRoute,
+        'alt': altImg,
+        'noImage': noImage
+    }
+
+    //Guardando en variable
+    preguntas.push(obj);
+
+
+    //Crear nuevo documento de mongoDB
+    const quest = questSchema(obj);
+    quest
+        .save()
+        .then(data => console.log(data))
+        .catch(error => res.status(500).send(error))
 
     console.log(req.body);
     console.log(req.file);
