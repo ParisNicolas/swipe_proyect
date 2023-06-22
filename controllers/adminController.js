@@ -3,13 +3,30 @@ const path = require('path');
 let { preguntas } = require("../data");
 const OneModel = require('../models/myModel');
 const moment = require('moment');
+const Quest = require("../models/myModel");
 /*
 let preguntas = global.preguntas;
 let ranking = global.ranking;
 */
 
+// Extraemos preguntas de la base de datos
+const extractQuest = async () => {
+    const quest = await Quest.find({
+        noImage: false
+    });
 
-//Carga de imagenes
+    //console.log('**** RESULTADO ****', post);
+}
+
+const createQuest = async () => {
+    Quest.create({newQuest})
+}
+
+const modifyQuest = async () => {
+    Quest.post({modifyQuest})
+}
+
+// Carga de imagenes
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'public/assets/uploads');
@@ -21,7 +38,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-// Añadir signos ¿? si se los escribio
+// Añadir signos ¿? si no se los escribio
 let stylisize = (quest) => {
     let formalized;
     if (quest[0] !== '¿') {
