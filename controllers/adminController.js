@@ -38,17 +38,14 @@ let stylisize = (quest) => {
 
 
 exports.adminPanel = (req, res) => {
-    let info;
-
     // Extraemos preguntas de la base de datos
     questSchema
-        .find()
-        .then(data => info=data)
+        .find({})
+        .then(data => {
+            console.log(data);
+            res.render('adminPanel', { "preguntas": data, "ranking": ranking })
+        })
         .catch(error => res.status(500).send(error))
-
-    console.log(info);
-    
-    res.render('adminPanel', { "preguntas": preguntas, "ranking": ranking });
 };
 
 
@@ -60,14 +57,34 @@ exports.reorderPregs = (req, res) => {
 
 exports.deletePreg = (req, res) => {
     console.log(req.params);
-    preguntas = preguntas.filter((p) => p.id !== req.params.pregId);
+    //preguntas = preguntas.filter((p) => p.id !== req.params.pregId);
+
+    //Borramos la pregunta de mongoDB
+    questSchema.deleteOne({id:req.params.pregId});
+
     res.status(200).send('Pregunta ' + req.params.pregId + ' eliminada');
 };
 
 
 exports.newQuest = [upload.single('image'), (req, res) => {
+
+    let lastID;
+
+    //.reduce((p1,p2) => p1.id>p2.id ? {id: p1.id}:{id: p2.id})
+
+    // Extraemos preguntas de la base de datos
+    questSchema
+        .find()
+        .sort({$natural:-1})
+        .limit(1)
+        .then(data => lastID=data.id)
+        .catch(error => res.status(500).send(error));
+    
+
+    
+    
     //Sumar 1 al id de la ultima pregunta y pasarlo a str
-    let id = String(Number(preguntas[preguntas.length - 1].id) + 1);
+    let id = String(Number(lastID) + 1);
     let preg = stylisize(req.body.preg);
 
     //transform text to bool

@@ -68,6 +68,6 @@ const rankSchema = new mongoose.Schema({
 //Creación del modelo Post
 //const Post = mongoose.model("Post", postSchema);
 
-const Quest = mongoose.model("Quest", questSchema);
+const Questions = mongoose.model("questions", questSchema);
 
-module.exports = Quest;
+module.exports = Questions;

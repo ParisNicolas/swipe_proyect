@@ -9,8 +9,8 @@ const dotenv = require("dotenv");
 const port = 2500;
 
 const myRouter = require("./router");
-const questSchema = require("./models/myModel")
-let { preguntas } = require("./data");
+/*const questSchema = require("./models/myModel")
+let { preguntas } = require("./data");*/
 
 
 app.set('view engine', 'ejs');
@@ -40,11 +40,11 @@ mongoose
     });
 
 
-    const quest = questSchema(preguntas[0]);
+    /*const quest = questSchema(preguntas[0]);
     quest
         .save()
         .then(data => console.log(data))
-        .catch(error => res.status(500).send(error))
+        .catch(error => res.status(500).send(error))*/
 
 
 //Rutas
