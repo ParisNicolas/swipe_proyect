@@ -34,6 +34,17 @@ let stylisize = (quest) => {
     return formalized;
 }
 
+async function getLastID() {
+    try {
+      const data = await questSchema.find({}).sort({$natural:-1}).limit(1);
+      console.log(data);
+      return data
+      // Aquí puedes realizar más operaciones sincrónicas con lastId
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
 
 
 
@@ -60,27 +71,27 @@ exports.deletePreg = (req, res) => {
     //preguntas = preguntas.filter((p) => p.id !== req.params.pregId);
 
     //Borramos la pregunta de mongoDB
-    questSchema.deleteOne({id:req.params.pregId});
+    questSchema.deleteOne({'id': req.params.pregId});
 
     res.status(200).send('Pregunta ' + req.params.pregId + ' eliminada');
 };
 
 
-exports.newQuest = [upload.single('image'), (req, res) => {
-
-    let lastID;
+exports.newQuest = [upload.single('image'), async (req, res) => {
 
     //.reduce((p1,p2) => p1.id>p2.id ? {id: p1.id}:{id: p2.id})
 
-    // Extraemos preguntas de la base de datos
-    questSchema
-        .find()
-        .sort({$natural:-1})
-        .limit(1)
-        .then(data => lastID=data.id)
-        .catch(error => res.status(500).send(error));
-    
+    let lastID;
 
+    try {
+        const data = await questSchema.find({}).sort({$natural:-1}).limit(1);
+        console.log(data);
+        lastID = data[0].id;
+        // Aquí puedes realizar más operaciones sincrónicas con lastId
+      } 
+    catch (error) {
+        res.status(500).send(error)
+    }
     
     
     //Sumar 1 al id de la ultima pregunta y pasarlo a str
@@ -142,15 +153,21 @@ exports.modifyQuest = [upload.single('image'), (req, res) => {
         noImage = false;
     }
 
-    
-    preguntas[pregReplace] = {
-        id: id,
-        preg: preg,
-        res: value,
-        img: imgRoute,
-        alt: altImg,
-        noImage: noImage
-    };
+    //Creando estructura
+    let obj = {
+        'id': id,
+        'preg': preg,
+        'res': value,
+        'img': imgRoute,
+        'alt': altImg,
+        'noImage': noImage
+    }
+
+    //Guardando en variable
+    preguntas[pregReplace] = obj;
+
+    //Modificar documento de mongoDB
+    questSchema.replaceOne({'id': id}, obj);
 
     console.log(req.body);
     console.log(req.file);
