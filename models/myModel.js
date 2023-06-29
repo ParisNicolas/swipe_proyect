@@ -1,25 +1,6 @@
 //Modelo de ejemplo para alojar datos en una DB mongo
 const mongoose = require("mongoose");
-
-//Creación del Schema Post
-const postSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: [true, "Un post debe tener un título"],
-    },
-    description: {
-        type: String,
-        required: [true, "Un post debe tener una descripción"],
-    },
-    date: {
-        type: Date,
-        required: [true, "Un post debe tener una fecha"],
-    },
-    technologies: {
-        type: [String],
-        required: [true, "Un post debe contar con tecnologías"],
-    },
-});
+const { rank } = require("../controllers/myController");
 
 //Creación del Schema de preguntas
 const questSchema = new mongoose.Schema({
@@ -43,7 +24,7 @@ const questSchema = new mongoose.Schema({
     }
 });
 
-//Creación del Schema Post
+//Creación del Schema de ranking
 const rankSchema = new mongoose.Schema({
     rank: {
         type: Number,
@@ -65,9 +46,8 @@ const rankSchema = new mongoose.Schema({
     }
 });
 
-//Creación del modelo Post
-//const Post = mongoose.model("Post", postSchema);
 
+const Ranking = mongoose.model("Ranking", rankSchema);
 const Questions = mongoose.model("questions", questSchema);
 
 module.exports = Questions;

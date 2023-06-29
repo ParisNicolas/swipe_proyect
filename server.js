@@ -8,11 +8,12 @@ const app = express();
 const dotenv = require("dotenv");
 const port = 2500;
 
+//Importando Rutas
 const myRouter = require("./router");
 /*const questSchema = require("./models/myModel")
 let { preguntas } = require("./data");*/
 
-
+//Configurar ejs
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -25,11 +26,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-// Carga de variables de entorno
+//Carga de variables de entorno
 dotenv.config({ path: "./config.env" });
 const DB = process.env.DATABASE.replace("<PASSWORD>", process.env.DATABASE_PASSWORD);
 
-// Conexión al cloud de Mongodb Atlas
+//Conexión al cloud de Mongodb Atlas
 mongoose
     .connect(DB, {
         useNewUrlParser: true,
@@ -47,9 +48,10 @@ mongoose
         .catch(error => res.status(500).send(error))*/
 
 
-//Rutas
+//Usando Rutas
 app.use("/", myRouter);
 
+//Iniciando el servidor
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });

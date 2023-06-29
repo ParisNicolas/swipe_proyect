@@ -1,12 +1,11 @@
 const multer = require("multer");
 const path = require('path');
-let { preguntas } = require("../data");
 const moment = require('moment');
+
+//Importamos preguntas y modelos
+let { preguntas } = require("../data");
 const questSchema = require("../models/myModel");
-/*
-let preguntas = global.preguntas;
-let ranking = global.ranking;
-*/
+
 
 // Carga de imagenes
 const storage = multer.diskStorage({
@@ -34,22 +33,10 @@ let stylisize = (quest) => {
     return formalized;
 }
 
-async function getLastID() {
-    try {
-      const data = await questSchema.find({}).sort({$natural:-1}).limit(1);
-      console.log(data);
-      return data
-      // Aquí puedes realizar más operaciones sincrónicas con lastId
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
-
-
-
+/*  Extraemos preguntas de la base de datos y 
+    Renderizamos la pagina */
 exports.adminPanel = (req, res) => {
-    // Extraemos preguntas de la base de datos
     questSchema
         .find({})
         .then(data => {
@@ -59,27 +46,24 @@ exports.adminPanel = (req, res) => {
         .catch(error => res.status(500).send(error))
 };
 
-
+// Reordenamos las variables
 exports.reorderPregs = (req, res) => {
     preguntas = req.body.newOrder.map((n) => preguntas[n]);
     res.status(200).send('Preguntas reordenadas en: ' + req.body.newOrder);
 };
 
-
+// Borramos la pregunta de mongoDB
 exports.deletePreg = (req, res) => {
     console.log(req.params);
     //preguntas = preguntas.filter((p) => p.id !== req.params.pregId);
 
-    //Borramos la pregunta de mongoDB
     questSchema.deleteOne({'id': req.params.pregId});
 
     res.status(200).send('Pregunta ' + req.params.pregId + ' eliminada');
 };
 
-
+//File Upload con Multer
 exports.newQuest = [upload.single('image'), async (req, res) => {
-
-    //.reduce((p1,p2) => p1.id>p2.id ? {id: p1.id}:{id: p2.id})
 
     let lastID;
 
@@ -98,9 +82,10 @@ exports.newQuest = [upload.single('image'), async (req, res) => {
     let id = String(Number(lastID) + 1);
     let preg = stylisize(req.body.preg);
 
-    //transform text to bool
+    //Transformar el texto en verdareros booleanos
     let value = req.body.value === 'false' ? false : true; 
 
+    //Flexibilidad en cuanto a poner o no imagen
     let imgRoute = '';
     let altImg = '';
     let noImage = true;
@@ -131,19 +116,23 @@ exports.newQuest = [upload.single('image'), async (req, res) => {
         .then(data => console.log(data))
         .catch(error => res.status(500).send(error))
 
+    //Informando de lo ocurrido
     console.log(req.body);
     console.log(req.file);
     console.log(preguntas);
     res.status(200).send();
 }];
 
+// 
 exports.modifyQuest = [upload.single('image'), (req, res) => {
     let id = req.params.pregId;
     let preg = stylisize(req.body.preg);
     let value = req.body.value === 'false' ? false : true; //transform text to bool
 
+    //Encontrar el id de la pregunta correspondiente
     let pregReplace = preguntas.find(p => p.id === id).id;
-
+    
+    //Flexibilidad en cuanto a poner o no imagen
     let imgRoute = preguntas[pregReplace].img;
     let altImg = preguntas[pregReplace].alt;
     let noImage = preguntas[pregReplace].noImage;
@@ -169,6 +158,7 @@ exports.modifyQuest = [upload.single('image'), (req, res) => {
     //Modificar documento de mongoDB
     questSchema.replaceOne({'id': id}, obj);
 
+    //Informando de lo ocurrido
     console.log(req.body);
     console.log(req.file);
     console.log(preguntas);
